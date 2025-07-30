@@ -1,9 +1,4 @@
 <!DOCTYPE HTML>
-<!--
-	Landed by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
 		<title>Casper Terrain</title>
@@ -16,70 +11,180 @@
 		<div id="page-wrapper">
 
 			<!-- Header -->
-				<header id="header">
-					<h1 id="logo"><a href="index.html">< Portfolio</a></h1>
-					<nav id="nav">
-					</nav>
-				</header>
+			<header id="header">
+				<h1 id="logo"><a href="index.html">< Portfolio</a></h1>
+				<nav id="nav">
+				</nav>
+			</header>
 
 			<!-- Main -->
-				<div id="main" class="wrapper style1">
-					<div class="container">
-						<header class="major">
-							<h2>Right Sidebar</h2>
-							<p>Ipsum dolor feugiat aliquam tempus sed magna lorem consequat accumsan</p>
-						</header>
-						<div class="row gtr-150">
-							<div class="col-8 col-12-medium">
+			<div id="main" class="wrapper style1">
+				<div class="container">
+					<header class="major"><h2>Procedural Generation of Game Worlds</h2></header>
 
-								<!-- Content -->
-									<section id="content">
-										<a href="#" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
-										<h3>Dolore Amet Consequat</h3>
-										<p>Aliquam massa urna, imperdiet sit amet mi non, bibendum euismod est. Curabitur mi justo, tincidunt vel eros ullamcorper, porta cursus justo. Cras vel neque eros. Vestibulum diam quam, mollis at magna consectetur non, malesuada quis augue. Morbi tincidunt pretium interdum est. Curabitur mi justo, tincidunt vel eros ullamcorper, porta cursus justo. Cras vel neque eros. Vestibulum diam.</p>
-										<p>Vestibulum diam quam, mollis at consectetur non, malesuada quis augue. Morbi tincidunt pretium interdum. Morbi mattis elementum orci, nec dictum porta cursus justo. Quisque ultricies lorem in ligula condimentum, et egestas turpis sagittis. Cras ac nunc urna. Nullam eget lobortis purus. Phasellus vitae tortor non est placerat tristique.</p>
-										<h3>Sed Magna Ornare</h3>
-										<p>In vestibulum massa quis arcu lobortis tempus. Nam pretium arcu in odio vulputate luctus. Suspendisse euismod lorem eget lacinia fringilla. Sed sed felis justo. Nunc sodales elit in laoreet aliquam. Nam gravida, nisl sit amet iaculis porttitor, risus nisi rutrum metus.</p>
-										<ul>
-											<li>Faucibus orci lobortis ac adipiscing integer.</li>
-											<li>Col accumsan arcu mi aliquet placerat.</li>
-											<li>Lobortis vestibulum ut magna tempor massa nascetur.</li>
-											<li>Blandit massa non blandit tempor interdum.</li>
-											<li>Lacinia mattis arcu nascetur lobortis.</li>
-										</ul>
-									</section>
+					<!-- Introduction -->
+					<div class="row gtr-150">
+						<div class="col-12 col-12-medium">
+							<b class="image fit"><img src="images/BannerTerrain2.png" alt="" /></b>
+							<h3>Introduction</h3>
+							<p>
+								For my final project at the University of Skövde, I decided to work with procedural terrain generation to create environments suitable for games in Unreal.
+								At the time I had been playing a lot of Helldivers 2, a game in which you play on maps which have been procedurally generated.
+								I wanted to create something in a similar vein as I found it quite intriguing how the game was capable of creating nuanced terrain while still keeping it possible to traverse between all points of interests.
+								Of course, within the limited timeframe I had of roughly 2 months for the course I was taking, I would not be able to create something as sophisticated as the generation Helldivers 2 has.
+								However, in the end, I am quite satisfied with what I managed to put together.
+							</p>
+							<p>
+								Procedural terrain generation is a deceptively complex subject as it involves multiple intersecting techniques which can be complicated within themselves.
+								Part of why I chose the subject, though, is because I have had experience with most of them from previous courses and personal projects.
+								When it comes to making meshes, I have programmed that before in Unity and I have learnt how to make donuts in Blender in my free time.
+								Procedurally generating data for the terrain and making a shader to texture it was not too difficult as I had experience with both from prior courses.
+								For our bachelor thesis, a classmate and I even explored how different procedural noise algorithms performed as shaders.
+							</p>
+							<p style="margin-bottom: 0">
+								Most of what I present here is not overly technical in detail, but rather aims to present how I have gone about to solve the problems that come with trying to create environments suitable for games.
+								As for what "environment suitable for games" entails, in addition to the generation of the ground which I refer to as the "terrain map," the procedural generation also includes the placement of larger structures on the terrain
+								while also decorating it with smaller objects like trees and grass.
+							</p>
+						</div>
+						<div class="col-12 col-12-medium"><hr/></div>
+					</div>
 
-							</div>
-							<div class="col-4 col-12-medium">
+					<!-- Generation of the Terrain Map -->
+					<div class="row gtr-150">
+						<div class="col-12 col-12-medium"><h3>Generation of the Terrain Map</h3></div>
+						<div class="col-8 col-12-medium">
+							<p>
+								The first part of generating game worlds is to create the very ground players will stand on.
+								I decided to utilize <a href="https://thebookofshaders.com/13/">Perlin Noise with Fractal Brownian Motion</a> to generate height curves
+								as it is an algorithm I have experience with, and is also readily available in the engine.
+								By taking the XY-coordinates of vertices in a plane mesh as input for the algorithm and then replacing the Z-coordinate with the output, height curves can be produced as seen to the right.
+							</p>
+						</div>
+						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/TerrainWireframe.png" alt="" /></b></div>
+						<div class="col-4 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/TerrainShader.png" alt="" /></b></div>
+						<div class="col-8 col-12-medium">
+							<p style="margin-bottom: 0">
+								To apply textures to the mesh made a shader that utilizes Triplanar Projection which projects textures from the coordinate axes rather than using UV-coordinates assigned on the geometry itself.
+								I did this because I found that assigning UV-coordinates to the entire <a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/geometry-scripting-users-guide-in-unreal-engine">Dynamic Mesh</a> 
+								took a non-insignificant amount of time. The method also has the advantage of textures not being <a href="https://discussions.unity.com/t/easy-solution-to-stretched-distorted-blurred-textures-on-terrain-cliffs-slopes-vertical/610856">awfully stretched due to height curves</a>.
+								Different textures are applied through the shader based on surface normals and height values.
+							</p>
+						</div>
+						<div class="col-12 col-12-medium"><hr/></div>
+					</div>
 
-								<!-- Sidebar -->
-									<section id="sidebar">
-										<section>
-											<h3>Magna Feugiat</h3>
-											<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit..</p>
-											<footer>
-												<ul class="actions">
-													<li><a href="#" class="button">Learn More</a></li>
-												</ul>
-											</footer>
-										</section>
-										<hr />
-										<section>
-											<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
-											<h3>Amet Lorem Tempus</h3>
-											<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-											<footer>
-												<ul class="actions">
-													<li><a href="#" class="button">Learn More</a></li>
-												</ul>
-											</footer>
-										</section>
-									</section>
+					<!-- Placement of Structures -->
+					<div class="row gtr-150">
+						<div class="col-12 col-12-medium"><h3>Placement of Structures</h3></div>
+						<div class="col-8 col-12-medium">
+							<p>
+								The placement of structures is a process divided into two main parts: finding a suitable spot for placement and adapting the geometry at that spot to fit the structure.
+								Once both of those parts are done it is only a matter of instantiating the structure at that spot.
+								To find suitable placement spots I decided to go with the approach that <a href="https://youtu.be/sCRzxEEcO2Y?t=2932">No Man's Sky</a> does with its building placement.
+								What they do is that they place buildings within the cells of a grid field from a top-down view.
+								This makes it easy to prevent structures from being placed on top of each other while also spreading them out efficiently on the terrain.
+								As for finding suitable spots within those cells I decided to make my own algorithm that tries to find a spot that requires minimal modifications to the geometry that is already there in order to make the placement look as natural as possible,
+								However, before making the placement algorithm I decided to make the algorithm that modifies the geometry as how the placement algorithm works most likely would come to depend on it.
+							</p>
+						</div>
+						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/FlattenHard.png" alt="" /></b></div>
+						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/FlattenSmooth.png" alt="" /></b></div>
+						<div class="col-8 col-12-medium">
+							<p>
+								The core of how the algorithm that modifies geometry works is just that it flattens terrain by setting the Z-coordinate of each vertex in a specified area to a specified value.
+								Only doing this, though, does not look very good as it creates unnatural sharp edges as seen above.
+								The solution is to simply smoothen the geometry within a certain distance to the edges of the flattened area.
+								I implemented this by moving each vertex a certain percentage from their original position towards the specified Z-coordinate used for flattening.
+								This percentage is based on the distance to the closest edge of the flattened area with 100% being right on the edge and 0% being at a specified max distance.
+								By adding a <a href="https://easings.net/#easeInOutSine">nice little curve</a> into the equation, the results look much more natural.
+								However, the most natural results come from combining the modification algorithm with the placement algorithm described down below.
+							</p>
+						</div>
+						<div class="col-8 col-12-medium" style="margin-bottom: 0">
+							<p style="margin-bottom: 0">
+								As the modification algorithm works by flattening terrain, I came to the conclusion that it made sense for the placement algorithm to try and find a spot where the area to be flattened already is as flat as possible.
+								The algorithm works by testing a specified amount of sample points to find how "flat" the area around those points are.
+								Flatness is measured by taking the corners of the area to be flattened and saving the Z-coordinate of each of them.
+								The Z-coordinate with the lowest value is subtracted from the one with the highest value.
+							</p>
+						</div>
+						<div class="col-4 col-12-medium" style="margin-bottom: 0"><b class="image fit" style="margin-bottom: 0"><img src="images/PlacementInitial.jpg" alt="" /></b></div>
+						<div class="col-12 col-12-medium">
+							<p>
+								This, in turn, can be interpreted as an approximation of the min-max height difference in the area.
+								It is only an approximation as it is not guaranteed that the corners of the area contain either the lowest or highest point within the area.
+								The advantage with this method, though, is that it is very fast.
+								In the picture down below I test 16 sample points (4x4) in each cell of the earlier described grid field in a 6x6 grid.
+								Testing these hundreds of points is done practically instantly.
+								When the height difference has been calculated for every sample point, 
+								the sample point with the lowest height difference can be considered the most "flat" and is chosen for placement.
+							</p>
+							<p>
+								When the area for placement has been found and modified, it is merely a matter of instantiating the relevant structure on top. 
+								I made it so that the placement function takes the structure in question as input and uses the area covered by its bounding box in the algorithms described above in order to make it as simple as possible to use the function.
+								In hindsight, it probably would have been better to just manually be able to specify the area size as geometry not directly connected to the ground is also covered by the bounding box.
+								This would result in unnatural looking flat areas below that geometry.
+							</p>
+						</div>
+						<div class="col-6 col-12-medium"><b class="image fit"><img src="images/ALotOfPlacements.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium"><b class="image fit"><img src="images/PlacementPlaced.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium">
+							<p style="margin-bottom: 0">
+								Blue represents sample points. 
+								Pink represents the sample point with the lowest height difference within the cell on the invisible grid field.
+								This is an older picture from before I reused the flattening algorithm to lower the sides of the terrain.
+							</p>
+						</div>
+						<div class="col-6 col-12-medium">
+							<p style="margin-bottom: 0">
+								Final result of the system to place structures. The objects used are only for testing and not every cell on the invisible grid field is used in this case.
+							</p>
+						</div>
+						<div class="col-12 col-12-medium"><hr/></div>
+					</div>
 
-							</div>
+					<!-- Placement of Structures -->
+					<div class="row gtr-150">
+						<div class="col-12 col-12-medium"><h3>Decorating the Terrain</h3></div>
+						<div class="col-12 col-12-medium">
+							<p>
+								When it came to decorating the terrain I originally planned to use <a href="https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm">Poisson Disk Sampling</a>
+								in order to spread points at which I would do a sanity check and place decorating objects like trees and grass if possible.
+								Before going ahead with this approach, I decided to explore if I could use the <a href="https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm">Procedural Content Generation Framework</a>
+								I had heard of instead, so I don't go reinventing the wheel.
+								What I found was that the framework was more than enough for what I wanted to accomplish.
+								After a while I managed to get it to distribute decorating objects in a way that avoids structures already on the terrain 
+								and added some rules such as not allowing decorations where the terrain is too steep.
+							</p>
+						</div>
+						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/ChunkDecorated.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/TerrainDecorated.png" alt="" /></b></div>
+						<div class="col-12 col-12-medium"><hr/></div>
+					</div>
+
+					<!-- Learn -->
+					<div class="row gtr-150">
+						<div class="col-12 col-12-medium"><h3>What I learned</h3></div>
+						<div class="col-12 col-12-medium">
+							<p>
+								Ultimately, I cannot claim I have learned too many new things with this project.
+								Most what I have done incorporates techniques I already have experience with, so most work has been about figuring out how to make them all work together.
+								Though, I guess one could claim that within itself is learning how to make procedural terrain.
+								Overall, I am satisfied with the project.
+								There are certainly some aspects I could improve on, but I believe what achieved so far amounts to a decent stopping point.
+								Prior to this, when it comes to procedural generation, I had only done a simple endless runner in 2D which used
+								<a href="https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm">agent-based dungeon growing</a>, so this project has certainly been a step-up.
+							</p>
+
+							<p style="margin-bottom: 0">
+								I managed to find the old endless runner I made, so I have inserted it below.
+							</p>
+							<iframe src="https://html-classic.itch.zone/html/14114935/index.html" width="100%" height="720px"></iframe>
 						</div>
 					</div>
 				</div>
+			</div>
 		</div>
 
 		<!-- Scripts -->
@@ -94,3 +199,17 @@
 
 	</body>
 </html>
+
+<!--							<p style="margin: 0 0 1em 0">-->
+<!--								This project ended up being divided into three major parts:-->
+<!--							</p>-->
+<!--							<ul style="margin: 0 0 1em 1em">-->
+<!--								<li>Generation of the Terrain Map (ground).<br>-->
+<!--									</li>-->
+<!--								<li>Placement of larger structures on the Terrain Map.</li>-->
+<!--								<li>Decorating the Terrain (Trees and Grass)</li>-->
+<!--							</ul>-->
+<!--							<p>-->
+<!--								<a href="https://antoniosliapis.com/articles/pcgbook_dungeons.php#section3">Agent-Based Dungeon Growing</a>.-->
+<!--							</p>-->
+<!--						
