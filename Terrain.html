@@ -25,7 +25,7 @@
 					<!-- Introduction -->
 					<div class="row gtr-150">
 						<div class="col-12 col-12-medium">
-							<b class="image fit"><img src="images/BannerTerrain2.png" alt="" /></b>
+							<b class="image fit"><img src="images/Terrain/BannerTerrain2.png" alt="" /></b>
 							<h3>Introduction</h3>
 							<p>
 								For my final project at the University of Skövde, I decided to work with procedural terrain generation to create environments suitable for games in Unreal.
@@ -61,8 +61,8 @@
 								By taking the XY-coordinates of vertices in a plane mesh as input for the algorithm and then replacing the Z-coordinate with the output, height curves can be produced as seen to the right.
 							</p>
 						</div>
-						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/TerrainWireframe.png" alt="" /></b></div>
-						<div class="col-4 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/TerrainShader.png" alt="" /></b></div>
+						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/Terrain/TerrainWireframe.png" alt="" /></b></div>
+						<div class="col-4 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/Terrain/TerrainShader.png" alt="" /></b></div>
 						<div class="col-8 col-12-medium">
 							<p style="margin-bottom: 0">
 								To apply textures to the mesh made a shader that utilizes Triplanar Projection which projects textures from the coordinate axes rather than using UV-coordinates assigned on the geometry itself.
@@ -88,8 +88,8 @@
 								However, before making the placement algorithm I decided to make the algorithm that modifies the geometry as how the placement algorithm works most likely would come to depend on it.
 							</p>
 						</div>
-						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/FlattenHard.png" alt="" /></b></div>
-						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/FlattenSmooth.png" alt="" /></b></div>
+						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/Terrain/FlattenHard.png" alt="" /></b></div>
+						<div class="col-4 col-12-medium"><b class="image fit"><img src="images/Terrain/FlattenSmooth.png" alt="" /></b></div>
 						<div class="col-8 col-12-medium">
 							<p>
 								The core of how the algorithm that modifies geometry works is just that it flattens terrain by setting the Z-coordinate of each vertex in a specified area to a specified value.
@@ -109,7 +109,7 @@
 								The Z-coordinate with the lowest value is subtracted from the one with the highest value.
 							</p>
 						</div>
-						<div class="col-4 col-12-medium" style="margin-bottom: 0"><b class="image fit" style="margin-bottom: 0"><img src="images/PlacementInitial.jpg" alt="" /></b></div>
+						<div class="col-4 col-12-medium" style="margin-bottom: 0"><b class="image fit" style="margin-bottom: 0"><img src="images/Terrain/PlacementInitial.jpg" alt="" /></b></div>
 						<div class="col-12 col-12-medium">
 							<p>
 								This, in turn, can be interpreted as an approximation of the min-max height difference in the area.
@@ -127,8 +127,8 @@
 								This would result in unnatural looking flat areas below that geometry.
 							</p>
 						</div>
-						<div class="col-6 col-12-medium"><b class="image fit"><img src="images/ALotOfPlacements.png" alt="" /></b></div>
-						<div class="col-6 col-12-medium"><b class="image fit"><img src="images/PlacementPlaced.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium"><b class="image fit"><img src="images/Terrain/ALotOfPlacements.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium"><b class="image fit"><img src="images/Terrain/PlacementPlaced.png" alt="" /></b></div>
 						<div class="col-6 col-12-medium">
 							<p style="margin-bottom: 0">
 								Blue represents sample points. 
@@ -158,8 +158,8 @@
 								and added some rules such as not allowing decorations where the terrain is too steep.
 							</p>
 						</div>
-						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/ChunkDecorated.png" alt="" /></b></div>
-						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/TerrainDecorated.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/Terrain/ChunkDecorated.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/Terrain/TerrainDecorated.png" alt="" /></b></div>
 						<div class="col-12 col-12-medium"><hr/></div>
 					</div>
 

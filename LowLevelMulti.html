@@ -25,15 +25,15 @@
             <!-- Introduction -->
             <div class="row gtr-150">
                 <div class="col-12 col-12-medium">
-                    <b class="image fit" style="background-color: #12151e ;"><img src="images/Multi_Game.jpg" alt="" style="width: 80%; margin-left: auto; margin-right: auto"/></b>
+                    <b class="image fit" style="background-color: #12151e ;"><img src="images/Multi/Multi_Game.jpg" alt="" style="width: 80%; margin-left: auto; margin-right: auto"/></b>
                     <h3>Introduction</h3>
                     <p>
                         For this project, me and a classmate decided to make a simple multiplayer game for the course we were taking.
                         I refer to it as simple, but that can be quite deceptive as it is the gameplay that was designed to be simpled whereas the underlying architecture ended up becoming quite complex.
-                        Originally, we used Unity's high-level networking library, <a href="https://docs-multiplayer.unity3d.com/netcode/current/about/">Netcode for GameObjects</a>, 
+                        Originally, we used Unity's high-level networking library, <a href="https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@2.4/manual/index.html">Netcode for GameObjects</a>, 
                         to make the game, which we learned to use through <a href="https://unity.com/resources/ultimate-guide-advanced-multiplayer-networking">Unity's e-book</a> about multiplayer within the engine.
                         However, we quickly encountered a problem, and that was that we finished the game within the first week.
-                        As the deadline was a month away, we decided to switch to using Unity's low-level networking library, <a href="https://docs-multiplayer.unity3d.com/transport/current/about/">Unity Transport</a>, which proved to be significantly more of a challenge.
+                        As the deadline was a month away, we decided to switch to using Unity's low-level networking library, <a href="https://docs.unity3d.com/Packages/com.unity.transport@2.5/manual/index.html">Unity Transport</a>, which proved to be significantly more of a challenge.
                     </p>
                 </div>
                 <div class="col-12 col-12-medium"><hr/></div>
@@ -61,7 +61,32 @@
                 <div class="col-12 col-12-medium"><h3>Architecture</h3></div>
                 <div class="col-12 col-12-medium">
                     <p>
-                        
+                        Multiplayer in the game was built through the low-level networking library <a href="https://docs.unity3d.com/Packages/com.unity.transport@2.5/manual/index.html">Unity Transport</a>.
+                        To give a better perspective of what that means, we used Transport set up player connections, manage them, and to create packages to be sent between them.
+                        In conjunction with Transport, we also used <a href="https://docs.unity.com/ugs/en-us/manual/relay/manual/introduction">Unity Relay</a> to establish connections over the web.
+                        Relay acts as a proxy between the players and host and is useful as it deals with problems like changing networks and IP addresses, NAT, and firewalls between players.
+                        I do want to mention that in addition to the relay solution which works over the web, we did also manage to set up a LAN solution solely through Transport.
+                    </p>
+                </div>
+                <div class="col-6 col-12-medium"><b class="image fit"><img src="images/Multi/Multi_Lobby.jpg" alt="" /></b></div>
+                <div class="col-6 col-12-medium"><b class="image fit"><img src="images/Multi/Multi_Players.jpg" alt="" /></b></div>
+                <div class="col-12 col-12-medium">
+                    <p>
+                        We began our work by solving the problem the rest of our work would come to depend on: sending data from one player to another.
+                        Fortunately, this wasn't to difficult as the documentation shows how to create a simple client and server, and how to send a package between them.
+                        It is after this point that the work got a lot more interesting for us.
+                        There are a lot of sources out there that explain networking concepts and what stuff like what UDP packages are, 
+                        but when it came to how to actually utilize them to create stuff like games, we didn't really find any.
+                        This meant that we were left to figure out that part for ourselves, which I found to be the most entertaining aspect of this project.
+                    </p>
+                </div>
+                <div class="col-12 col-12-medium">
+                    <p>
+                        Something I realized pretty much immediately is that we would be sending a lot of packages containing different types of data for the different parts of our game.
+                        As such, we made it so the first piece of data in every package is an integer which is used as an identifier as to how the package is supposed to be read.
+                        From then on it was mostly busy work setting up the game itself by creating protocols for how to write or read packages and implementing how the data itself utilized.
+                        The most interesting parts to me during this process was just figuring out how data should be communicated between connections
+                        and finding some clever optimizations to minimize the amount of data that needs to be communicated in the first place.
                     </p>
                 </div>
             </div>
@@ -71,7 +96,17 @@
                 <div class="col-12 col-12-medium"><h3>What I learned</h3></div>
                 <div class="col-12 col-12-medium">
                     <p>
-
+                        I learned a lot from this project.
+                        What I consider of most value from what I have learned is the general understanding I now have of how data is communicated in games.
+                        As mentioned, we started of by using <a href="https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@2.4/manual/index.html">Netcode for GameObjects</a>
+                        to make the game, but we ultimately didn't end up learning a lot from that experience other than how to utilize the solutions the library provided.
+                        In contrast, from having to write UDP packages myself and set up how they are communicated between players, 
+                        I've come to have a more holistic understanding how games are networked on a deeper level which is also engine agnostic to an extent.
+                        I did also end up learning a lot about network programming in general as I at one point tried to set up a solution of our own to establish connections instead of relying on
+                        <a href="https://docs.unity.com/ugs/en-us/manual/relay/manual/introduction">Unity Relay</a>.
+                        In the end, that wasn't successful due to port forwarding not being possible on my router.
+                        However, I did manage to set up a solution that works locally, so we made it possible to choose in the menu whether to form 
+                        connections over the web through Relay or to form connections over LAN.
                     </p>
                 </div>
             </div>
