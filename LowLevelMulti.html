@@ -26,10 +26,12 @@
             <div class="row gtr-150">
                 <div class="col-12 col-12-medium">
                     <b class="image fit" style="background-color: #12151e ;"><img src="images/Multi/Multi_Game.jpg" alt="" style="width: 80%; margin-left: auto; margin-right: auto"/></b>
+                </div>
+                <div class="col-12 col-12-medium">
                     <h3>Introduction</h3>
-                    <p>
+                    <p style="margin-bottom: 0">
                         For this project, me and a classmate decided to make a simple multiplayer game for the course we were taking.
-                        I refer to it as simple, but that can be quite deceptive as it is the gameplay that was designed to be simpled whereas the underlying architecture ended up becoming quite complex.
+                        I refer to it as simple, but it is the gameplay that was designed to be simple whereas the underlying architecture ended up becoming quite complex.
                         Originally, we used Unity's high-level networking library, <a href="https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@2.4/manual/index.html">Netcode for GameObjects</a>, 
                         to make the game, which we learned to use through <a href="https://unity.com/resources/ultimate-guide-advanced-multiplayer-networking">Unity's e-book</a> about multiplayer within the engine.
                         However, we quickly encountered a problem, and that was that we finished the game within the first week.
@@ -40,26 +42,28 @@
             </div>
 
             <!-- Gameplay -->
-            <div class="col-12 col-12-medium">
-                <h3>Gameplay</h3>
-                <p>
-                    As mentioned, the gameplay is quite simple. 
-                    The focus of the project was the underlying multiplayer architecture, 
-                    so I tried coming up with an idea for a game where multiplayer itself is essential, but the development time for non-multiplayer aspects is kept minimal.
-                    As for the game, the goal is for two players to cooperate in order to move upwards until the progress bar in the middle fills up which results in them winning.
-                    To progress upwards, players can jump, move to the left or right, and also shoot shapes in the direction of their cursor by left-clicking.
-                    A shape shot by a player stops in place once they press left-click once more.
-                    The problem players face is that they are divided by a barrier (the yellow area), and cannot stop shapes in place on their side of the barrier.
-                    Thus, to progress upwards, the players have to cooperate by shooting shapes over to each other which they can jump onto.
-                    For added difficulty, we made the shapes to be fired randomized and made it so each player can only have 2 shapes in place at once.
-                </p>
+            <div class="row gtr-150">
+                <div class="col-12 col-12-medium">
+                    <h3>Gameplay</h3>
+                    <p style="margin-bottom: 0">
+                        As mentioned, the gameplay is quite simple. 
+                        The focus of the project was the underlying multiplayer architecture, 
+                        so I tried coming up with an idea for a game where multiplayer itself is essential, but the development time for non-multiplayer aspects is kept minimal.
+                        As for the game, the goal is for two players to cooperate in order to move upwards until the progress bar in the middle fills up which results in them winning.
+                        To progress upwards, players can jump, move to the left or right, and also shoot shapes in the direction of their cursor by left-clicking.
+                        A shape shot by a player stops in place once they press left-click once more.
+                        The problem players face is that they are divided by a barrier (the yellow area), and cannot stop shapes in place on their side of the barrier.
+                        Thus, to progress upwards, the players have to cooperate by shooting shapes over to each other which they can jump onto.
+                        For added difficulty, we made the shapes to be fired randomized and made it so each player can only have 2 shapes in place at once.
+                    </p>
+                </div>
                 <div class="col-12 col-12-medium"><hr/></div>
             </div>
 
             <!-- Architecture -->
             <div class="row gtr-150">
-                <div class="col-12 col-12-medium"><h3>Architecture</h3></div>
                 <div class="col-12 col-12-medium">
+                    <h3>Architecture</h3>
                     <p>
                         Multiplayer in the game was built through the low-level networking library <a href="https://docs.unity3d.com/Packages/com.unity.transport@2.5/manual/index.html">Unity Transport</a>.
                         To give a better perspective of what that means, we used Transport set up player connections, manage them, and to create packages to be sent between them.
@@ -79,9 +83,7 @@
                         but when it came to how to actually utilize them to create stuff like games, we didn't really find any.
                         This meant that we were left to figure out that part for ourselves, which I found to be the most entertaining aspect of this project.
                     </p>
-                </div>
-                <div class="col-12 col-12-medium">
-                    <p>
+                    <p style="margin-bottom: 0">
                         Something I realized pretty much immediately is that we would be sending a lot of packages containing different types of data for the different parts of our game.
                         As such, we made it so the first piece of data in every package is an integer which is used as an identifier as to how the package is supposed to be read.
                         From then on it was mostly busy work setting up the game itself by creating protocols for how to write or read packages and implementing how the data itself utilized.
@@ -90,6 +92,7 @@
                     </p>
                 </div>
             </div>
+            <div class="col-12 col-12-medium"><hr/></div>
             
             <!-- Learn -->
             <div class="row gtr-150">

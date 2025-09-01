@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Casper Portfolio</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+<div id="page-wrapper">
+
+    <!-- Header -->
+    <header id="header">
+        <h1 id="logo"><a href="index.html">< Portfolio</a></h1>
+        <nav id="nav">
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <div id="main" class="wrapper style1">
+        <div class="container">
+            <header class="major"><h2>Optimizing Boids</h2></header>
+
+            <!-- Introduction -->
+            <div class="row gtr-150">
+                <div class="col-12 col-12-medium">
+                    <b class="image fit" style="background-color: #12151e ;"><img src="images/Boids/BoidsBannerReal.png" alt="" style="width: 80%; margin-left: auto; margin-right: auto"/></b>
+                    <div class="col-12 col-12-medium"><h3>Introduction</h3></div>
+                    <p style="margin-bottom: 0">
+                        For this project, I went through the process of implementing <a href="https://en.wikipedia.org/wiki/Boids">Bird-Oid Objects</a> (Boids) through 
+                        <a href="https://unity.com/resources/introduction-to-dots-ebook">Unity's Data-Oriented Technology Stack</a> (DOTS).
+                        Implementing boids was something I had done before, so the goal this time around was to try and see how scalable I could make it through the technologies available with DOTS.
+                        While working on the project, I also learned of an optimization technique called 
+                        <a href="https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/spatial-hashing-r2697/">Spatial Hashing</a>
+                        and decided to incorporate into the final solution.
+                        In the end, the two-faceted approach of utilizing both DOTS and Spatial Hashing proved to be an incredibly powerful combination that immensely improved scalability.
+                    </p>
+                </div>
+                <div class="col-12 col-12-medium"><hr/></div>
+            </div>
+
+            <!-- Boids -->
+            <div class="row gtr-150">
+                <div class="col-12 col-12-medium">
+                    <h3>Boids</h3>
+                    <p>
+                        The aim of boids is to simulate the flocking behavior of birds.
+                        Flocking is accomplished through the combination of three <a href="https://www.red3d.com/cwr/steer/">Steering Behaviors</a> 
+                        which each contribute a force used to dictate the movement of a boid.
+                        The three steering behaviors used in this case utilize the position and heading of other boids within a minimum distance
+                        to emulate flocking behavior.
+                    </p>
+                </div>
+                
+                <div class="col-4 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/Boids/Rule_separation.gif" alt="" /></b></div>
+                <div class="col-4 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/Boids/Rule_alignment.gif" alt="" /></b></div>
+                <div class="col-4 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/Boids/Rule_cohesion.gif" alt="" /></b></div>
+                <div class="col-4 col-12-medium"><p style="text-align: center"><b>Separation:</b> steer to avoid crowding local flockmates.</p></div>
+                <div class="col-4 col-12-medium"><p style="text-align: center"><b>Alignment:</b> steer towards the average heading of local flockmates.</p></div>
+                <div class="col-4 col-12-medium"><p style="text-align: center"><b>Cohesion:</b> steer to move toward the average position of local flockmates.</p></div>
+                
+                <div class="col-12 col-12-medium">
+                    <p style="margin-bottom: 0">
+                        Implementing steering behaviors is usually not too difficult as each one in isolation tends to be quite simple in its logic.
+                        The tricky part is combining them as you have to intricately balance the force each steering behavior contributes to get the final behavior you want.
+                        When you don't get the final behavior you want, it can be hard to tell which steering behavior is the cause of unintended movement 
+                        and whether the problem lies in the variables used or how the math itself is set up.
+                        From my experience, it helps immensely to have gizmos display the different forces contributed by each steering behavior.
+                    </p>
+                </div>
+                <div class="col-12 col-12-medium"><hr/></div>
+            </div>
+
+            <!-- Optimization -->
+            <div class="row gtr-150">
+                <div class="col-12 col-12-medium">
+                    <h3>Optimizations</h3>
+                    <p>
+                        Unity's DOTS is composed of three central technologies: the Entity Component System (ECS), the Job System, and the Burst Compiler.
+                        The Unity ECS is just a typical <a href="https://en.wikipedia.org/wiki/Entity_component_system">Entity Component System</a> 
+                        but integrated within the engine itself.
+                        As for the Job System, it is used to create multithreaded code by scheduling code as "jobs" to be done.
+                        Finally, the Burst Compiler is black magic which you enable through a singular button press that somehow results in your code becoming 
+                        faster by translating it into ancient forbidden scriptures.
+                        Ultimately, most of the time spent in this project ended up going to learning how the ECS and Job Systems work and their syntax.
+                        The Burst Compiler does also have its own restrictions you need to work around, but you're pretty much working within these restrictions
+                        already when you're working with the ECS and Job System in conjunction.
+                    </p>
+                    <p>
+                        When it comes to scalability, a problem that becomes apparent with boids is that each boid has to iterate over every other boid to do 
+                        the calculations for its steering behaviors, which entails an O(n²) time complexity.
+                        As boids too far away won't even affect each other, this means a lot of processing time is wasted solely on the task of calculating
+                        if boids are within the minimum distance of each other to have an influence on their respective steering behaviors.
+                        While doing a simple distance calculation is quite fast, when you have 40 000 boids that each needs the distance to the other
+                        39 999 boids, the processing time adds up.
+                        Depending on how the space the boids are contained in is set up, it may be the case that not even 0.1% of those 39 999 boids fulfill the
+                        minimum distance requirement.
+                    </p>
+                    <p>
+                        To reduce the amount of distance calculations required, I implemented Spatial Hashing which works by dividing space into discrete chunks.
+                        All boids start off by finding which chunk they're in by calculating their "spatial hash."
+                        After that, rather than every boid iterating over every other boid that exists, a boid can instead use their spatial hash to find which chunk they are in
+                        and then only need to iterate over boids within that chunk and chunks close enough to possibly contain boids which fulfill the minimum
+                        distance requirement.
+                        Assigning spatial hashes can be done with an O(n) time complexity, so this has the potential to significantly reduce the amount of processing time required 
+                        when managing a large amount of boids.
+                    </p>
+                </div>
+                <div class="col-12 col-12-medium"><b class="image fit"><img src="images/Boids/BoidsInAction.gif" alt="" /></b></div>
+                <div class="col-12 col-12-medium">
+                    <p style="margin-bottom: 0">
+                        40 000 boids contained within a box that teleports them to the opposite side when going out of bounds.
+                    </p>
+                </div>
+                
+                <div class="col-12 col-12-medium"><hr/></div>
+            </div>
+
+            <!-- Results -->
+            <div class="row gtr-150">
+                <div class="col-12 col-12-medium"><h3>Results</h3>
+                    <p>
+                        Down below are three graphs comparing the performance between 400, 4 000, and 40 000 boids.
+                        In addition to just changing the amount of boids, I've also compared turning certain optimizations on and off.<br>
+                        <b>
+                            Parallel/Singular = Jobs System On/Off<br>
+                            Red/Blue = Burst Compiler On/Off
+                        </b>
+                    </p>
+                </div>
+                <div class="col-6 col-12-medium"><b class="image fit"><img src="images/Boids/400.png" alt="" /></b></div>
+                <div class="col-6 col-12-medium"><b class="image fit"><img src="images/Boids/4000.png" alt="" /></b></div>
+                <div class="col-6 col-12-medium" style="margin-left: auto; margin-right: auto"><b class="image fit" style="margin-bottom: 10px;"><img src="images/Boids/40000.png" alt="" /></b>
+                    <p style ="text-align: center">I was unable to get a number for Singular without Burst Compiler as Unity would crash when trying.</p></div>
+                <div class="col-12 col-12-medium">
+                    <p>
+                        As can be seen from the graphs, the performance of the boids implementation improves the more optimizations are enabled.
+                        These benefits also become greater the higher the amount of boids is.
+                        Unfortunately, all test results use the Unity ECS as I don't have a non-ECS implementation to make fair comparisons to.
+                        All in all, the most surprising result to me is how potent the Burst Compiler is.
+                        The other optimizations all required effort to get working whereas the Burst Compiler I just had to enable in a menu, so I wouldn't
+                        expect it do bring great benefits, but I was quite wrong.
+                    </p>
+                    <p>
+                        Something that may be of curiosity in the results is how the graph for 400 boids differs from the other two.
+                        This can be explained by the fact that the optimizations in place cannot be fully utilized at such a small number.
+                        When it comes to the Jobs System, the work scheduled isn't completely evenly divided between worker threads in this case.
+                        This has to do with the facts that the ECS stores up to a maximum of 128 entities in a single memory chunk.
+                        Because of this, when jobs are scheduled for entities, each job may pertain to a maximum of 128 entities each.
+                        In the case of 400 boids, the work would result in 4 jobs allocated to a worker thread each instead of the work
+                        being evenly divided between every thread available.
+                        When the amount of boids is increased to 4 000, it creates more jobs which results in more worker threads being utilized
+                        and therefore provides greater benefits from doing work in parallel.
+                    </p>
+                    <p>
+                        As for why Spatial Hashing doesn't have as much of an effect at 400 boids compared to higher amounts, it's simply due to the fact that the O(n²) 
+                        time complexity without Spatial Hashing isn't that significant of a problem.
+                        The Burst Compiler resulting in similar results across the board at 400 boids is probably because it can rush through the code so fast that the 
+                        majority of frametime just ends up going to other factors like rendering.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Learn -->
+            <div class="row gtr-150">
+                <div class="col-12 col-12-medium"><h3>What I learned</h3>
+                    <p>
+                        I learned quite a lot from this project as it was the first time I got to work with Multi-Threading and an Entity Component System.
+                        All in all, the overarching concepts weren't too difficult to learn as the <a href="https://unity.com/resources/introduction-to-dots-ebook">Unity e-book</a> explained them quite well.
+                        More difficult was acclimating to the code structure which differs somewhat from what I'm accustomed to, and of course learning the syntax which could be scary at times when you find stuff like
+                        <a href="https://docs.unity3d.com/Packages/com.unity.collections@0.2/api/Unity.Collections.IJobNativeMultiHashMapMergedSharedKeyIndices.html">IJobNativeMultiHashMapMergedSharedKeyIndices</a>
+                        in sample projects.
+                        Spatial Hashing was something I learned of on the side while working on the project and wasn't something I originally planned to have in it, but after reading a blog post about it, I came to
+                        the conclusion that it wouldn't be too hard to implement, so I went ahead and did it.
+                        I'm glad I did because it proved to be valuable for this project, and it may very likely be a solution I use again in the future if I ever encounter a similar problem.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/jquery.dropotron.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
