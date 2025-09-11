@@ -21,6 +21,7 @@ section, summary, time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
+	text-align: justify;
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;}
@@ -2150,6 +2151,27 @@ table.default thead {
 		display: block;
 		width: 100%;
 	}
+	
+	.image.floatLeft {
+		float: left;
+		width: 33%;
+		display: block;
+		margin: 8px 15px 0 0;
+	}
+
+	.image.floatRight {
+		float: right;
+		width: 33%;
+		display: block;
+		margin: 8px 0 0 15px;
+	}
+
+.image.floatBottom {
+	float: right;
+	width: 33%;
+	display: block;
+	margin: 8px 0 0 15px;
+}
 	
 	.image.fit {
 		display: block;
