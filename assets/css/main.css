@@ -164,6 +164,7 @@ input, select, textarea {
 		font-size: 2em;
 		line-height: 1.5em;
 		letter-spacing: -0.025em;
+		text-align: start;
 	}
 
 	h3 {
@@ -2974,7 +2975,7 @@ table.default thead {
 /* Header */
 
 	#page-wrapper {
-		padding-top: 3.5em;
+		<!--padding-top: 3.5em;-->
 	}
 
 	#header {
@@ -3429,19 +3430,20 @@ table.default thead {
 
 			.wrapper {
 				padding: 3.25em 1.5em 1.25em 1.5em;
+				margin-top: 3em;
 			}
 
 		/* Header */
 
 			#header {
-				display: none;
+				
 			}
 
 		/* Banner */
 
 			#banner {
 				box-shadow: 0 0.125em 0.5em 0 rgba(0, 0, 0, 0.25);
-				min-height: calc(100vh - 44px);
+				/* min-height: calc(100vh - 44px); */
 			}
 
 				#banner:before {
@@ -3473,7 +3475,7 @@ table.default thead {
 				-ms-transition: -ms-transform 0.5s ease;
 				transition: transform 0.5s ease;
 				padding-bottom: 1px;
-				padding-top: 44px !important;
+				/* padding-top: 44px !important; */
 			}
 
 			#titleBar {
