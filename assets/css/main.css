@@ -3367,6 +3367,7 @@ table.default thead {
 
 			h2 {
 				font-size: 1.5em;
+				text-align: start;
 			}
 
 			h3 {
