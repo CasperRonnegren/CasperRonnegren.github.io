@@ -164,7 +164,6 @@ input, select, textarea {
 		font-size: 2em;
 		line-height: 1.5em;
 		letter-spacing: -0.025em;
-		text-align: start;
 	}
 
 	h3 {
@@ -2979,12 +2978,12 @@ table.default thead {
 	}
 
 	#header {
-		background: rgba(39, 40, 51, 0.965);
+		background: rgba(39, 40, 51, 1);
 		box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.25);
 		cursor: default;
-		height: 3.5em;
+		height: 2.5em;
 		left: 0;
-		line-height: 3.5em;
+		line-height: 2.5em;
 		position: fixed;
 		top: 0;
 		width: 100%;
@@ -2993,7 +2992,7 @@ table.default thead {
 
 		#header h1 {
 			height: inherit;
-			left: 1.25em;
+			left: 0.75em;
 			line-height: inherit;
 			margin: 0;
 			position: absolute;
@@ -3430,7 +3429,7 @@ table.default thead {
 
 			.wrapper {
 				padding: 3.25em 1.5em 1.25em 1.5em;
-				margin-top: 3em;
+				margin-top: 3.5em;
 			}
 
 		/* Header */
