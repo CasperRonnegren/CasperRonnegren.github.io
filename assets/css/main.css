@@ -2981,9 +2981,9 @@ table.default thead {
 		background: rgba(39, 40, 51, 1);
 		box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.25);
 		cursor: default;
-		height: 2.5em;
+		height: 3.5em;
 		left: 0;
-		line-height: 2.5em;
+		line-height: 3.5em;
 		position: fixed;
 		top: 0;
 		width: 100%;
@@ -2992,7 +2992,7 @@ table.default thead {
 
 		#header h1 {
 			height: inherit;
-			left: 0.75em;
+			left: 1.25em;
 			line-height: inherit;
 			margin: 0;
 			position: absolute;
@@ -3331,7 +3331,12 @@ table.default thead {
 
 					#banner .content header {
 						display: block;
-						margin: 0 0 2em 0;
+						margin: 0 0 1.5em 0;
+					}
+
+					#banner .content header p {
+						margin: 0.5em 0 0 0;
+						top: 0;
 						text-align: center;
 					}
 
@@ -3367,7 +3372,6 @@ table.default thead {
 
 			h2 {
 				font-size: 1.5em;
-				text-align: start;
 			}
 
 			h3 {
@@ -3387,6 +3391,7 @@ table.default thead {
 
 			header h2 + p {
 				font-size: 1em;
+				text-align: center;
 			}
 
 			header h3 + p {
@@ -3436,7 +3441,12 @@ table.default thead {
 		/* Header */
 
 			#header {
-				
+				height: 2.5em;
+				line-height: 2.5em;
+			}
+
+			#header h1 {
+				left: 0.75em;
 			}
 
 		/* Banner */
@@ -3453,6 +3463,10 @@ table.default thead {
 				#banner .content {
 					padding: 4.0625em 1.5em 4.875em 1.5em;
 				}
+
+					#banner .content header {
+						margin: 0 0 1em 0;
+					}
 
 					#banner .content header h2 {
 						font-size: 1.5em;

@@ -94,29 +94,33 @@
                         The Burst Compiler does also have its own restrictions you need to work around, but you're pretty much already doing that when working with the ECS and Job System.
                     </p>
                     <p>
-                        When it comes to scalability, a problem that becomes apparent with boids is that each boid has to iterate over every other boid to do 
-                        the calculations for its steering behaviors, which entails an O(n²) time complexity.
-                        As boids too far away won't even affect each other, this means a lot of processing time is wasted solely on the task of calculating
-                        if boids are within the minimum distance of each other to have an influence on their respective steering behaviors.
-                        While doing a simple distance calculation is quite fast, when you have 40 000 boids that each needs the distance to the other
-                        39 999 boids, the processing time adds up.
-                        Depending on how the space the boids are contained in is set up, it may be the case that not even 0.1% of those 39 999 boids fulfill the
-                        minimum distance requirement.
+                        When it comes to scalability, a problem that becomes apparent with boids is that every boid has to iterate over all other boids to do the calculations 
+                        for its steering behaviors. 
+                        This entails an O(n²) time complexity.
+                        As boids too far away from each other won't even affect one another, a lot of processing time is essentially wasted just to find out if this is the case.
+                        While doing a simple distance calculation is quite fast, when you have 40 000 boids that each needs to find the distance to the other 39 999 boids, the 
+                        processing time adds up.
+                        The worst part is that if the boids are set up to be sparse, it could very easily be the case that each individual boid won't even find themselves close
+                        enough to affect even a small percentage of the other boids.
+                        In my case with how I set it up, it was the norm that a boid wouldn't even affect 0.1% of the other 39 999 boids.
+                        99.9% of the iterations boids do over each other are therefore just done to conclude that they aren't close enough to affect one another.
                     </p>
                     <p>
-                        To reduce the amount of distance calculations required, I implemented Spatial Hashing which works by dividing space into discrete chunks.
-                        All boids start off by finding which chunk they're in by calculating their "spatial hash."
-                        After that, rather than every boid iterating over every other boid that exists, a boid can instead use their spatial hash to find which chunk they are in
-                        and then only need to iterate over boids within that chunk and chunks close enough to possibly contain boids which fulfill the minimum
-                        distance requirement.
-                        Assigning spatial hashes can be done with an O(n) time complexity, so this has the potential to significantly reduce the amount of processing time required 
-                        when managing a large amount of boids.
+                        To reduce the amount of iterations boids need to do over each other, I implemented Spatial Hashing.
+                        The optimization technique works by dividing space into discrete chunks.
+                        A boid can find which chunk it's located in by doing a simple math calculation using its position.
+                        All boids are put in a HashMap where the Key is the chunk and the Value is a collection of boids within that chunk.
+                        Rather than having boids iterate over all other boids to find if they are close enough to affect each other, boids can instead look up the HashMap and only need to iterate over
+                        boids within chunks that may contain ones which are close enough to fulfill the minimum distance requirement.
+                        This can significantly reduce the amount of processing time required when managing a large amount of sparsely located boids.
+                        The biggest cost from Spatial Hashing comes from setting up the HashMap which is done in O(n) time, but that is insignificant compared to what is won from filtering out all the
+                        iterations that would otherwise result in nothing.
                     </p>
                 </div>
                 <div class="col-12 col-12-medium"><b class="image fit"><img src="images/Boids/BoidsInAction.gif" alt="" /></b></div>
                 <div class="col-12 col-12-medium">
                     <p style="margin-bottom: 0">
-                        40 000 boids contained within a box that teleports them to the opposite side when going out of bounds.
+                        40 000 boids contained within a cube-shaped space. Boids are teleported to the opposite side when they go out of bounds.
                     </p>
                 </div>
                 
@@ -126,9 +130,10 @@
             <!-- Results -->
             <div class="row gtr-150">
                 <div class="col-12 col-12-medium"><h3>Results</h3>
-                    <p>
-                        Down below are three graphs comparing the performance between 400, 4 000, and 40 000 boids.
-                        In addition to just changing the amount of boids, I've also compared turning certain optimizations on and off.<br>
+                    <p style="margin-bottom: 0.5em">
+                        The graphs down below show the performance of the final solution ran at 400, 4 000, and 40 000 boids.
+                        Each graph also shows the performance with some different optimizations turned on or off.
+                        <br>
                         <b>
                             Parallel/Singular = Jobs System On/Off<br>
                             Red/Blue = Burst Compiler On/Off
@@ -138,32 +143,31 @@
                 <div class="col-6 col-12-medium"><b class="image fit"><img src="images/Boids/400.png" alt="" /></b></div>
                 <div class="col-6 col-12-medium"><b class="image fit"><img src="images/Boids/4000.png" alt="" /></b></div>
                 <div class="col-6 col-12-medium" style="margin-left: auto; margin-right: auto"><b class="image fit" style="margin-bottom: 10px;"><img src="images/Boids/40000.png" alt="" /></b>
-                    <p style ="text-align: center">I was unable to get a number for Singular without Burst Compiler as Unity would crash when trying.</p></div>
+                    <p style ="text-align: center">I was unable to get a number for Singular without Burst Compiler turned on at 40 000 boids as Unity would crash when trying.</p></div>
                 <div class="col-12 col-12-medium">
                     <p>
-                        As can be seen from the graphs, the performance of the boids implementation improves the more optimizations are enabled.
-                        These benefits also become greater the higher the amount of boids is.
-                        Unfortunately, all test results use the Unity ECS as I don't have a non-ECS implementation to make fair comparisons to.
-                        All in all, the most surprising result to me is how potent the Burst Compiler is.
-                        The other optimizations all required effort to get working whereas the Burst Compiler I just had to enable in a menu, so I wouldn't
-                        expect it do bring great benefits, but I was quite wrong.
+                        As can be seen in the graphs, performance improves the more optimizations are enabled.
+                        The improvements provided are also greater the higher the amount of boids is set to.
+                        Something that may be of absence in the graphs is data with regard to the Unity ECS.
+                        Unfortunately, I wasn't able to gather data as to how impactful the Unity ECS is as I don't have a non-ECS implementation to make fair comparisons to.
                     </p>
                     <p>
-                        Something that may be of curiosity in the results is how the graph for 400 boids differs from the other two.
-                        This can be explained by the fact that the optimizations in place cannot be fully utilized at such a small number.
-                        When it comes to the Jobs System, the work scheduled isn't completely evenly divided between worker threads in this case.
-                        This has to do with the facts that the ECS stores up to a maximum of 128 entities in a single memory chunk.
-                        Because of this, when jobs are scheduled for entities, each job may pertain to a maximum of 128 entities each.
-                        In the case of 400 boids, the work would result in 4 jobs allocated to a worker thread each instead of the work
-                        being evenly divided between every thread available.
-                        When the amount of boids is increased to 4 000, it creates more jobs which results in more worker threads being utilized
-                        and therefore provides greater benefits from doing work in parallel.
+                        Something of interest in the results is how the Jobs System has a much greater impact for 4 000 and 40 000 boids than it does for 400 boids.
+                        This can be explained by how the Jobs System divides work.
+                        When a job is scheduled to run in parallel for a set amount of entities, it divides the work by creating multiple jobs which each pertain to a subset of those entities.
+                        These jobs are distributed to worker threads in order to be able to run parallel with each other.
+                        Each job may pertain up to a maximum of 128 entities, which has to do with how the Unity ECS stores up to 128 entities in a single memory chunk.
+                        In practice, if a job were to be scheduled for 400 entities, it would result in 4 jobs distributed to 4 worker threads (if 4 worker threads are available).
+                        If more than 4 workers threads are available, the additional ones simply remains unused.
+                        Hence, the reason the impact of the Jobs System is greater for 4 000 boids than it is for 400 boids is that more worker threads have the chance to be utilized for 4 000 boids.
                     </p>
                     <p>
-                        As for why Spatial Hashing doesn't have as much of an effect at 400 boids compared to higher amounts, it's simply due to the fact that the O(n²) 
-                        time complexity without Spatial Hashing isn't that significant of a problem.
-                        The Burst Compiler resulting in similar results across the board at 400 boids is probably because it can rush through the code so fast that the 
-                        majority of frametime just ends up going to other factors like rendering.
+                        Another point of interest is how the Burst Compiler produces very similar results for all optimization combinations it's used in on the graph for 400 boids.
+                        This is most likely just because it can rush through the code so fast at 400 boids that the majority of frametime just ends up going to other factors like rendering.
+                        The contribution of other optimizations also probably becomes minimal compared to the Burst Compiler as they don't have as much of an opportunity to showcase their strength 
+                        at 400 boids like they for the higher amounts.
+                        The Job System has already been discussed as to why, but the reason for Spatial Hashing is that the O(n²) time complexity without it doesn't become that significant of a 
+                        problem at only 400 boids.
                     </p>
                 </div>
             </div>
@@ -172,14 +176,26 @@
             <div class="row gtr-150">
                 <div class="col-12 col-12-medium"><h3>What I learned</h3>
                     <p>
-                        I learned quite a lot from this project as it was the first time I got to work with Multi-Threading and an Entity Component System.
-                        All in all, the overarching concepts weren't too difficult to learn as the <a href="https://unity.com/resources/introduction-to-dots-ebook">Unity E-Book</a> explained them quite well.
-                        More difficult was acclimating to the code structure which differs somewhat from what I'm accustomed to, and of course learning the syntax which could be scary at times when you find stuff like
-                        <a href="https://docs.unity3d.com/Packages/com.unity.collections@0.2/api/Unity.Collections.IJobNativeMultiHashMapMergedSharedKeyIndices.html">IJobNativeMultiHashMapMergedSharedKeyIndices</a>
-                        in sample projects.
-                        Spatial Hashing was something I learned of on the side while working on the project and wasn't something I originally planned to have in it, but after reading a blog post about it, I came to
-                        the conclusion that it wouldn't be too hard to implement, so I went ahead and did it.
-                        I'm glad I did because it proved to be valuable for this project, and it may very likely be a solution I use again in the future if I ever encounter a similar problem.
+                        I ended up learning quite a lot from this project.
+                        It was my first time working with Multi-Threading, which is something that has been on my todo-list for a while now as I've long known
+                        that it's an essential part of writing performant code.
+                        In the end, it wasn't too scary apart from figuring out the syntax and what very descriptively named stuff like
+                        <a href="https://docs.unity3d.com/Packages/com.unity.collections@0.2/api/Unity.Collections.IJobNativeMultiHashMapMergedSharedKeyIndices.html">IJobNativeMultiHashMapMergedSharedKeyIndices</a> does.
+                        In addition to Multi-Threading, this project was also my first time working with an Entity Component System.
+                        Prior to this project, I had never even heard of the concept of an ECS before, so it was completely uncharted territory to me.
+                        Now, however, after having learned about it and what Data-Oriented Design is all about, I have become radicalized by the belief that 
+                        Object-Oriented Programming is needlessly inefficient and wasteful compared to "real" programming which adheres to the blessed 
+                        machine by prioritizing efficiency rather than human-readability.
+                        This opinion of mine has nothing to do with randomly coming across a video of some guy on Youtube going on a passionate rant about why Object-Oriented 
+                        Programming sucks and me being easily influenced.
+                    </p>
+                    <p>
+                        The final aspect of this project that has been somewhat of a learning experience is the explicit focus it has had on implementing optimizations in general.
+                        Performance is something that has always been taken into consideration throughout all the projects I've worked on, but it has been more so from the point 
+                        of measuring it as that has typically been a requirement for assignments during my time at the University of Skövde.
+                        Of course, structuring code to be performant is something I always have in the back of my mind, but for this project specifically I got to go out of my way 
+                        to just try and make something run as well as it can.
+                        Through the process, I managed to learn of some nifty optimization tricks and techniques which brought me joy as they improved performance numbers.
                     </p>
                 </div>
             </div>
