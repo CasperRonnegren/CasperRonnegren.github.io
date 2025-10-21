@@ -54,7 +54,7 @@
 						<div class="col-12 col-12-medium"><h3>Generation of Geometry</h3></div>
 						<div class="col-12 col-12-medium">
 							<p>
-								<b class="image floatRight" style="width: 21em;"><img src="images/Terrain/TerrainWireframe.png" alt="" /></b>
+								<b class="image floatRight" style="width: 21em;"><img loading="lazy" src="images/Terrain/TerrainWireframe.png" alt="" /></b>
 								The first step of generating terrain for game worlds involves the creation of the ground players will stand on.
 								I decided to utilize <a href="https://thebookofshaders.com/13/">Perlin Noise with Fractal Brownian Motion</a> to generate height curves.
 								I chose it because it's an algorithm I have experience with, and more importantly, an implementation of Perlin Noise is readily available in the engine, so I don't have to make one myself.
@@ -66,7 +66,7 @@
 						</div>
 						<div class="col-12 col-12-medium">
 							<p style="margin-bottom: 0">
-								<b class="image floatLeft" style="width: 20.8em;"><img src="images/Terrain/TerrainShader.png" alt="" /></b>
+								<b class="image floatLeft" style="width: 20.8em;"><img loading="lazy" src="images/Terrain/TerrainShader.png" alt="" /></b>
 								To apply textures to the mesh, I made a shader that utilizes Triplanar Projection which projects textures from the coordinate axes.
 								I did this because I found that assigning UV-coordinates to a <a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/geometry-scripting-users-guide-in-unreal-engine">Dynamic Mesh</a> 
 								in Unreal took a non-insignificant amount of time. 
@@ -99,11 +99,11 @@
 							</p>
 						</div>
 						<div class="col-12 col-12-medium">
-							<b class="image floatRight" style="width: 10em;"><img src="images/Terrain/FlattenHard.png" alt="" /></b>
+							<b class="image floatRight" style="width: 10em;"><img loading="lazy" src="images/Terrain/FlattenHard.png" alt="" /></b>
 							<p>
 								The first thing the algorithm that adapts geometry does is that it flattens an area on the terrain by setting the Z-coordinate of each vertex in an area to the same value.
 								This makes it easy to place a structure on top of that area, but only doing this does not look very good as it gives the area sharp edges as can be seen in the picture.
-								<b class="image floatLeft" style="width: 10em;"><img src="images/Terrain/FlattenSmooth.png" alt="" /></b>
+								<b class="image floatLeft" style="width: 10em;"><img loading="lazy" src="images/Terrain/FlattenSmooth.png" alt="" /></b>
 								To make it look more natural, the geometry within a certain distance to the edges of the flattened area is smoothened.
 								This is done by moving the Z-coordinate of each vertex a percentage towards the Z-coordinate used for flattening.
 								The percentage is inversely proportional to the distance to the closest edge, meaning 100% on the edge of the flattened area (0 distance), and 0% at max distance.
@@ -125,7 +125,7 @@
 								This ends up resulting in behaviour that tries to minimize how much the terrain has to be modified when placement occurs.
 							</p>
 							<p>
-								<b class="image floatRight" style="width: 22em;"><img src="images/Terrain/PlacementInitial.jpg" alt="" /></b>
+								<b class="image floatRight" style="width: 22em;"><img loading="lazy" src="images/Terrain/PlacementInitial.jpg" alt="" /></b>
 								The algorithm works by testing an amount of sample points to find how "flat" the area at each of those points are.
 								This is done by finding the difference between the lowest and highest corner of the area to be flattened.
 								Whichever sample point resulted in the lowest difference in height is the point which had the flattest area.
@@ -139,13 +139,13 @@
 						</div>
 						
 						<div class="col-6 col-12-medium">
-							<b class="image fit"><img src="images/Terrain/ALotOfPlacements.png" alt="" /></b>
+							<b class="image fit"><img loading="lazy" src="images/Terrain/ALotOfPlacements.png" alt="" /></b>
 							<p style="margin-bottom: 0">
 								6x6 grid (invisible) with 4x4 sample points in each cell. Pink represent the sample point with the lowest height difference within the cell.
 							</p>
 						</div>
 						<div class="col-6 col-12-medium">
-							<b class="image fit"><img src="images/Terrain/PlacementPlaced.png" alt="" /></b>
+							<b class="image fit"><img loading="lazy" src="images/Terrain/PlacementPlaced.png" alt="" /></b>
 							<p style="margin-bottom: 0">
 								Final result of the system to place structures. Not every cell on the grid field is set to have a structure in this case, only the top 6 with lowest height difference.
 							</p>
@@ -171,8 +171,8 @@
 								with some additional rules such as not allowing decorations where the terrain is too steep.
 							</p>
 						</div>
-						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/Terrain/ChunkDecorated.png" alt="" /></b></div>
-						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img src="images/Terrain/TerrainDecorated.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img loading="lazy" src="images/Terrain/ChunkDecorated.png" alt="" /></b></div>
+						<div class="col-6 col-12-medium"><b class="image fit" style="margin-bottom: 10px"><img loading="lazy" src="images/Terrain/TerrainDecorated.png" alt="" /></b></div>
 						<div class="col-12 col-12-medium"><hr/></div>
 					</div>
 
@@ -193,7 +193,7 @@
 							<p style="margin-bottom: 0">
 								I managed to find the old endless runner I made, so I have inserted it below.
 							</p>
-							<iframe src="https://html-classic.itch.zone/html/14114935/index.html" width="100%" height="720px"></iframe>
+							<iframe loading="lazy" src="https://html-classic.itch.zone/html/14114935/index.html" width="100%" height="720px"></iframe>
 						</div>
 					</div>
 				</div>
