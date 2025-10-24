@@ -187,10 +187,20 @@
 							Of course, prior to this the mesh didn't have any normals set, but this was only a matter of finding the result of a normalized diagonal vector for each corner.
 							The results can be seen below.
 						</p>
-						<div class="col-6 col-12-medium"><a href="images/Blog/DepthScale.png" class="image fit"><img loading="lazy" src="images/Blog/DepthScale.png" alt="" /></a></div>
-						<div class="col-6 col-12-medium"><a href="images/Blog/NoDepthScale.png" class="image fit"><img loading="lazy" src="images/Blog/NoDepthScale.png" alt="" /></a></div>
+						<div class="col-6 col-12-medium">
+							<a href="images/Blog/DepthScale.png" class="image fit" style="margin-bottom: 0"><img loading="lazy" src="images/Blog/DepthScale.png" alt="" /></a>
+							<p style="text-align: center">
+								Depth Scaling
+							</p>
+						</div>
+						<div class="col-6 col-12-medium">
+							<a href="images/Blog/NoDepthScale.png" class="image fit" style="margin-bottom: 0"><img loading="lazy" src="images/Blog/NoDepthScale.png" alt="" /></a>
+							<p style="text-align: center">
+								No Depth Scaling
+							</p>
+						</div>
 						<p>
-							The greatest benefit I would say is that it improves upon aliasing which otherwise becomes much more noticeable with distance (click on the image if it's hard to see).
+							The greatest benefit I would say is that it improves upon the aliasing which otherwise becomes much more noticeable with distance (click on the image if it's hard to see).
 						</p>
 						<p>
 							At this point when working on the shader, I had an idea.
@@ -201,8 +211,18 @@
 							I felt absolutely ingenious when I came up with this, as if the spirit of Ben Cloward himself had guided me towards this answer.
 							The results can be seen below.
 						</p>
-						<div class="col-6 col-12-medium"><a href="images/Blog/RotatedDepthScale.png" class="image fit"><img loading="lazy" src="images/Blog/RotatedDepthScale.png" alt="" /></a></div>
-						<div class="col-6 col-12-medium"><a href="images/Blog/DepthScale.png" class="image fit"><img loading="lazy" src="images/Blog/DepthScale.png" alt="" /></a></div>
+						<div class="col-6 col-12-medium">
+							<a href="images/Blog/RotatedDepthScale.png" class="image fit" style="margin-bottom: 0"><img loading="lazy" src="images/Blog/RotatedDepthScale.png" alt="" /></a>
+							<p style="text-align: center">
+								Depth Scaling + Rotated Offset Vectors
+							</p>
+						</div>
+						<div class="col-6 col-12-medium">
+							<a href="images/Blog/DepthScale.png" class="image fit" style="margin-bottom: 0"><img loading="lazy" src="images/Blog/DepthScale.png" alt="" /></a>
+							<p style="text-align: center">
+								Depth Scaling
+							</p>
+						</div>
 						<p>
 							This is the current point I am in this project right now.
 							There were some small visual oddities when I tried rotating the offset vectors, but I've managed to hide them pretty well after some experimentation.
